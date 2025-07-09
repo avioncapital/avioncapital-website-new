@@ -25,33 +25,39 @@ import {
   FileText,
   Wrench,
   RefreshCw,
+  Construction,
+  Zap,
 } from "lucide-react"
 
 import type React from "react"
 
-// Image carousel component
-function ImageCarousel({ images, className = "" }: { images: string[]; className?: string }) {
+// Image carousel component with colored backgrounds and icons
+function ImageCarousel({
+  items,
+  className = "",
+}: { items: Array<{ title: string; icon: React.ReactNode; bgColor: string }>; className?: string }) {
   const [currentIndex, setCurrentIndex] = useState(0)
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length)
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % items.length)
     }, 5000) // Change image every 5 seconds
 
     return () => clearInterval(interval)
-  }, [images.length])
+  }, [items.length])
 
   return (
     <div className={`relative overflow-hidden ${className}`}>
-      {images.map((image, index) => (
-        <img
+      {items.map((item, index) => (
+        <div
           key={index}
-          src={image || "/placeholder.svg"}
-          alt={`Carousel image ${index + 1}`}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+          className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center transition-opacity duration-1000 ${
             index === currentIndex ? "opacity-100" : "opacity-0"
-          }`}
-        />
+          } ${item.bgColor}`}
+        >
+          <div className="text-white mb-4">{item.icon}</div>
+          <h3 className="text-white text-xl font-bold text-center px-4">{item.title}</h3>
+        </div>
       ))}
     </div>
   )
@@ -78,21 +84,57 @@ export default function HomePage() {
   const [captcha, setCaptcha] = useState({ num1: 0, num2: 0, answer: "" })
   const [captchaValid, setCaptchaValid] = useState(false)
 
-  // Industry images for top carousel
-  const industryImages = [
-    "/placeholder.svg?height=400&width=400&text=Heavy+Excavator",
-    "/placeholder.svg?height=400&width=400&text=Semi+Truck+Trailer",
-    "/placeholder.svg?height=400&width=400&text=Cessna+Caravan",
-    "/placeholder.svg?height=400&width=400&text=Twin+Otter+Aircraft",
-    "/placeholder.svg?height=400&width=400&text=Boeing+767+Cargo",
+  // Industry items for top carousel
+  const industryItems = [
+    {
+      title: "Heavy Equipment Financing",
+      icon: <Construction className="h-20 w-20" />,
+      bgColor: "bg-gradient-to-br from-orange-500 to-orange-600",
+    },
+    {
+      title: "Trucking & Transportation",
+      icon: <Truck className="h-20 w-20" />,
+      bgColor: "bg-gradient-to-br from-blue-500 to-blue-600",
+    },
+    {
+      title: "Aviation Financing",
+      icon: <Plane className="h-20 w-20" />,
+      bgColor: "bg-gradient-to-br from-purple-500 to-purple-600",
+    },
+    {
+      title: "Commercial Aircraft",
+      icon: <Zap className="h-20 w-20" />,
+      bgColor: "bg-gradient-to-br from-indigo-500 to-indigo-600",
+    },
+    {
+      title: "Cargo & Freight",
+      icon: <Building2 className="h-20 w-20" />,
+      bgColor: "bg-gradient-to-br from-green-500 to-green-600",
+    },
   ]
 
-  // Canadian/office images for bottom carousel
-  const canadianImages = [
-    "/placeholder.svg?height=400&width=400&text=Canadian+Flag",
-    "/placeholder.svg?height=400&width=400&text=Happy+Business+People",
-    "/placeholder.svg?height=400&width=400&text=Map+of+Canada",
-    "/placeholder.svg?height=400&width=400&text=Toronto+Office+Skyline",
+  // Canadian/office items for bottom carousel
+  const canadianItems = [
+    {
+      title: "🇨🇦 Proudly Canadian",
+      icon: <div className="text-6xl">🇨🇦</div>,
+      bgColor: "bg-gradient-to-br from-red-500 to-red-600",
+    },
+    {
+      title: "Success Stories",
+      icon: <Users className="h-20 w-20" />,
+      bgColor: "bg-gradient-to-br from-green-500 to-green-600",
+    },
+    {
+      title: "Coast to Coast Coverage",
+      icon: <div className="text-6xl">🗺️</div>,
+      bgColor: "bg-gradient-to-br from-blue-500 to-blue-600",
+    },
+    {
+      title: "Toronto Headquarters",
+      icon: <Building2 className="h-20 w-20" />,
+      bgColor: "bg-gradient-to-br from-slate-500 to-slate-600",
+    },
   ]
 
   // Generate new captcha
@@ -253,8 +295,8 @@ export default function HomePage() {
               </div>
             </div>
             <div className="relative">
-              <div className="aspect-square bg-gradient-to-br from-blue-100 to-slate-100 rounded-2xl overflow-hidden shadow-lg">
-                <ImageCarousel images={industryImages} className="aspect-square rounded-2xl" />
+              <div className="aspect-square rounded-2xl overflow-hidden shadow-lg">
+                <ImageCarousel items={industryItems} className="aspect-square rounded-2xl" />
               </div>
             </div>
           </div>
@@ -479,8 +521,8 @@ export default function HomePage() {
               </div>
             </div>
             <div className="relative">
-              <div className="aspect-square bg-gradient-to-br from-slate-100 to-blue-100 rounded-2xl overflow-hidden shadow-lg">
-                <ImageCarousel images={canadianImages} className="aspect-square rounded-2xl" />
+              <div className="aspect-square rounded-2xl overflow-hidden shadow-lg">
+                <ImageCarousel items={canadianItems} className="aspect-square rounded-2xl" />
               </div>
             </div>
           </div>
