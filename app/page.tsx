@@ -25,23 +25,21 @@ import {
   FileText,
   Wrench,
   RefreshCw,
-  Construction,
-  Zap,
 } from "lucide-react"
 
 import type React from "react"
 
-// Image carousel component with colored backgrounds and icons
+// Image carousel component
 function ImageCarousel({
   items,
   className = "",
-}: { items: Array<{ title: string; icon: React.ReactNode; bgColor: string }>; className?: string }) {
+}: { items: Array<{ title: string; image?: string; icon?: React.ReactNode; bgColor: string }>; className?: string }) {
   const [currentIndex, setCurrentIndex] = useState(0)
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % items.length)
-    }, 5000) // Change image every 5 seconds
+    }, 5000)
 
     return () => clearInterval(interval)
   }, [items.length])
@@ -51,12 +49,40 @@ function ImageCarousel({
       {items.map((item, index) => (
         <div
           key={index}
-          className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center transition-opacity duration-1000 ${
+          className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
             index === currentIndex ? "opacity-100" : "opacity-0"
-          } ${item.bgColor}`}
+          }`}
         >
-          <div className="text-white mb-4">{item.icon}</div>
-          <h3 className="text-white text-xl font-bold text-center px-4">{item.title}</h3>
+          {item.image ? (
+            <div className="relative w-full h-full">
+              <img
+                src={item.image || "/placeholder.svg"}
+                alt={item.title}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  // Fallback to gradient background if image fails to load
+                  const target = e.target as HTMLImageElement
+                  target.style.display = "none"
+                  const parent = target.parentElement
+                  if (parent) {
+                    parent.className = `w-full h-full flex flex-col items-center justify-center ${item.bgColor}`
+                    parent.innerHTML = `
+                      <div class="text-white mb-4">${item.icon ? "" : "📷"}</div>
+                      <h3 class="text-white text-xl font-bold text-center px-4">${item.title}</h3>
+                    `
+                  }
+                }}
+              />
+              <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center">
+                <h3 className="text-white text-xl font-bold text-center px-4">{item.title}</h3>
+              </div>
+            </div>
+          ) : (
+            <div className={`w-full h-full flex flex-col items-center justify-center ${item.bgColor}`}>
+              <div className="text-white mb-4">{item.icon}</div>
+              <h3 className="text-white text-xl font-bold text-center px-4">{item.title}</h3>
+            </div>
+          )}
         </div>
       ))}
     </div>
@@ -84,56 +110,61 @@ export default function HomePage() {
   const [captcha, setCaptcha] = useState({ num1: 0, num2: 0, answer: "" })
   const [captchaValid, setCaptchaValid] = useState(false)
 
-  // Industry items for top carousel
+  // Industry items for top carousel - YOUR CUSTOM IMAGES
   const industryItems = [
     {
       title: "Heavy Equipment Financing",
-      icon: <Construction className="h-20 w-20" />,
+      image: "/images/excavator.jpg",
       bgColor: "bg-gradient-to-br from-orange-500 to-orange-600",
     },
     {
       title: "Trucking & Transportation",
-      icon: <Truck className="h-20 w-20" />,
+      image: "/images/truck.jpg",
       bgColor: "bg-gradient-to-br from-blue-500 to-blue-600",
     },
     {
-      title: "Aviation Financing",
-      icon: <Plane className="h-20 w-20" />,
+      title: "Cessna Caravan Financing",
+      image: "/images/airplane1.jpg",
       bgColor: "bg-gradient-to-br from-purple-500 to-purple-600",
     },
     {
-      title: "Commercial Aircraft",
-      icon: <Zap className="h-20 w-20" />,
+      title: "Twin Otter Aircraft",
+      image: "/images/airplane2.jpg",
       bgColor: "bg-gradient-to-br from-indigo-500 to-indigo-600",
     },
     {
-      title: "Cargo & Freight",
-      icon: <Building2 className="h-20 w-20" />,
+      title: "Boeing 767 Cargo",
+      image: "/images/airplane3.jpg",
       bgColor: "bg-gradient-to-br from-green-500 to-green-600",
     },
   ]
 
-  // Canadian/office items for bottom carousel
+  // Canadian/office items for bottom carousel - YOUR CUSTOM IMAGES
   const canadianItems = [
     {
       title: "🇨🇦 Proudly Canadian",
-      icon: <div className="text-6xl">🇨🇦</div>,
+      image: "/images/canadian-flag.jpg",
       bgColor: "bg-gradient-to-br from-red-500 to-red-600",
     },
     {
       title: "Success Stories",
-      icon: <Users className="h-20 w-20" />,
+      image: "/images/business-people.jpg",
       bgColor: "bg-gradient-to-br from-green-500 to-green-600",
     },
     {
       title: "Coast to Coast Coverage",
-      icon: <div className="text-6xl">🗺️</div>,
+      image: "/images/canada-map.jpg",
       bgColor: "bg-gradient-to-br from-blue-500 to-blue-600",
     },
     {
       title: "Toronto Headquarters",
-      icon: <Building2 className="h-20 w-20" />,
+      image: "/images/toronto-skyline.jpg",
       bgColor: "bg-gradient-to-br from-slate-500 to-slate-600",
+    },
+    {
+      title: "Company Growth",
+      image: "/images/company-growth.jpg",
+      bgColor: "bg-gradient-to-br from-purple-500 to-purple-600",
     },
   ]
 
