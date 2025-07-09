@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -9,9 +9,53 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { ArrowRight, Truck, Building2, Users, ChefHat, Plane, Clock, Shield, Handshake, Mail, Phone, MapPin, DollarSign, FileText, Wrench, RefreshCw } from 'lucide-react'
+import {
+  ArrowRight,
+  Truck,
+  Building2,
+  Users,
+  ChefHat,
+  Plane,
+  Clock,
+  Shield,
+  Handshake,
+  Mail,
+  Phone,
+  MapPin,
+  FileText,
+  Wrench,
+  RefreshCw,
+} from "lucide-react"
 
 import type React from "react"
+
+// Image carousel component
+function ImageCarousel({ images, className = "" }: { images: string[]; className?: string }) {
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length)
+    }, 5000) // Change image every 5 seconds
+
+    return () => clearInterval(interval)
+  }, [images.length])
+
+  return (
+    <div className={`relative overflow-hidden ${className}`}>
+      {images.map((image, index) => (
+        <img
+          key={index}
+          src={image || "/placeholder.svg"}
+          alt={`Carousel image ${index + 1}`}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+            index === currentIndex ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      ))}
+    </div>
+  )
+}
 
 export default function HomePage() {
   const [isFormOpen, setIsFormOpen] = useState(false)
@@ -33,6 +77,23 @@ export default function HomePage() {
   // Simple math captcha state
   const [captcha, setCaptcha] = useState({ num1: 0, num2: 0, answer: "" })
   const [captchaValid, setCaptchaValid] = useState(false)
+
+  // Industry images for top carousel
+  const industryImages = [
+    "/placeholder.svg?height=400&width=400&text=Heavy+Excavator",
+    "/placeholder.svg?height=400&width=400&text=Semi+Truck+Trailer",
+    "/placeholder.svg?height=400&width=400&text=Cessna+Caravan",
+    "/placeholder.svg?height=400&width=400&text=Twin+Otter+Aircraft",
+    "/placeholder.svg?height=400&width=400&text=Boeing+767+Cargo",
+  ]
+
+  // Canadian/office images for bottom carousel
+  const canadianImages = [
+    "/placeholder.svg?height=400&width=400&text=Canadian+Flag",
+    "/placeholder.svg?height=400&width=400&text=Happy+Business+People",
+    "/placeholder.svg?height=400&width=400&text=Map+of+Canada",
+    "/placeholder.svg?height=400&width=400&text=Toronto+Office+Skyline",
+  ]
 
   // Generate new captcha
   const generateCaptcha = () => {
@@ -156,8 +217,8 @@ export default function HomePage() {
                 <span className="block text-blue-600">Business Growth</span>
               </h1>
               <p className="mt-6 text-xl text-slate-600 leading-relaxed">
-                Fast, flexible capital solutions tailored to businesses across transportation, construction, staffing,
-                hospitality, and aviation. Get the funding you need with minimal red tape.
+                Fast, flexible capital solutions tailored to Canadian businesses across transportation, construction,
+                staffing, hospitality, and aviation. Get the funding you need with minimal red tape and maximum results.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-4">
                 <Dialog open={isFormOpen} onOpenChange={handleFormOpen}>
@@ -192,8 +253,8 @@ export default function HomePage() {
               </div>
             </div>
             <div className="relative">
-              <div className="aspect-square bg-gradient-to-br from-blue-100 to-slate-100 rounded-2xl flex items-center justify-center">
-                <DollarSign className="h-32 w-32 text-blue-600" />
+              <div className="aspect-square bg-gradient-to-br from-blue-100 to-slate-100 rounded-2xl overflow-hidden shadow-lg">
+                <ImageCarousel images={industryImages} className="aspect-square rounded-2xl" />
               </div>
             </div>
           </div>
@@ -418,8 +479,8 @@ export default function HomePage() {
               </div>
             </div>
             <div className="relative">
-              <div className="aspect-square bg-gradient-to-br from-slate-100 to-blue-100 rounded-2xl flex items-center justify-center">
-                <div className="text-6xl">🇨🇦</div>
+              <div className="aspect-square bg-gradient-to-br from-slate-100 to-blue-100 rounded-2xl overflow-hidden shadow-lg">
+                <ImageCarousel images={canadianImages} className="aspect-square rounded-2xl" />
               </div>
             </div>
           </div>
@@ -453,7 +514,7 @@ export default function HomePage() {
                   <Phone className="h-6 w-6 text-green-600" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">Phone</h3>
-                <p className="text-slate-600">416-908-4901</p>
+                <p className="text-slate-600">416-908-4902</p>
               </CardContent>
             </Card>
 
@@ -728,7 +789,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="border-t border-slate-800 mt-8 pt-8 text-center text-slate-400">
-            <p>&copy; 2025 Avion Capital. All rights reserved.</p>
+            <p>&copy; 2024 Avion Capital. All rights reserved.</p>
           </div>
         </div>
       </footer>
