@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
@@ -7,25 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import {
-  ArrowRight,
-  Truck,
-  Building2,
-  Users,
-  ChefHat,
-  Plane,
-  Clock,
-  Shield,
-  Handshake,
-  Mail,
-  Phone,
-  MapPin,
-  DollarSign,
-  FileText,
-  Wrench,
-  RefreshCw,
-} from "lucide-react"
-;("use client")
+import { ArrowRight, Truck, Building2, Users, ChefHat, Plane, Clock, Shield, Handshake, Mail, Phone, MapPin, DollarSign, FileText, Wrench, RefreshCw } from 'lucide-react'
 
 import type React from "react"
 
