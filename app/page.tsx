@@ -73,9 +73,7 @@ function ImageCarousel({
                   }
                 }}
               />
-              <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center">
-                <h3 className="text-white text-xl font-bold text-center px-4">{item.title}</h3>
-              </div>
+              <div className="absolute inset-0 bg-black bg-opacity-40"></div>
             </div>
           ) : (
             <div className={`w-full h-full flex flex-col items-center justify-center ${item.bgColor}`}>
