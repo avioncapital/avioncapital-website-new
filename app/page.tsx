@@ -584,7 +584,7 @@ export default function HomePage() {
                   <Phone className="h-6 w-6 text-green-600" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">Phone</h3>
-                <p className="text-slate-600">416-908-4902</p>
+                <p className="text-slate-600">416-908-4901</p>
               </CardContent>
             </Card>
 
